@@ -28,6 +28,9 @@ import Time from './Time';
 import GiftedAvatar from './GiftedAvatar';
 import GiftedChatInteractionManager from './GiftedChatInteractionManager';
 
+import { NativeModules,findNodeHandle } from 'react-native';
+const ResetInput = NativeModules.ResetInput;
+
 // Min and max heights of ToolbarInput and Composer
 // Needed for Composer auto grow and ScrollView animation
 // TODO move these values to Constants.js (also with used colors #b2b2b2)
@@ -321,6 +324,11 @@ class GiftedChat extends React.Component {
   }
 
   onSend(messages = [], shouldResetInputToolbar = false) {
+
+    if(Platform.OS!=='ios'){
+      ResetInput.resetKeyboardInput(findNodeHandle(this.textInput));
+    }
+
     if (!Array.isArray(messages)) {
       messages = [messages];
     }
